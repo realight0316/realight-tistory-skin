@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin>
+  <information>
+    <name>import my_days</name>
+    <version>1.0.0</version>
+    <description>
+      <![CDATA[그리드 스타일의 개인 블로그 반응형 스킨입니다.]]>
+    </description>
+  </information>
+  <author>
+    <name>import my_days</name>
+    <homepage>https://realight.tistory.com/</homepage>
+    <email>316kjh@gmail.com</email>
+  </author>
+
+  <liststyle>
+    <item>
+      <value>grid</value>
+      <label>그리드 (3단)</label>
+    </item>
+    <item>
+      <value>list</value>
+      <label>리스트 (1단)</label>
+    </item>
+  </liststyle>
+
+  <cover>
+    <item>
+      <name>main-grid</name>
+      <label>메인 그리드 리스트</label>
+      <description>홈 화면에 표시될 포스트 그리드 배열입니다.</description>
+    </item>
+  </cover>
+
+  <variables>
+    <variablegroup name="사이드바 설정">
+      <variable>
+        <name>sidebar-profile-msg</name>
+        <label>사이드바 설명 문구</label>
+        <description><![CDATA[ 프로필 이미지 아래 표시될 설명을 입력하세요. ]]></description>
+        <type>STRING</type>
+        <default> 여러 가지 기록을 남깁니다 </default>
+      </variable>
+      <variable>
+        <name>show-rss</name>
+        <label>RSS 아이콘 표시</label>
+        <description><![CDATA[ 사이드바 하단 RSS 아이콘 표시 여부 ]]></description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+      <variable>
+        <name>show-mail</name>
+        <label>메일 아이콘 표시</label>
+        <description><![CDATA[ 사이드바 하단 메일 아이콘 표시 여부 ]]></description>
+        <type>BOOL</type>
+        <default>true</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="디자인 설정">
+      <variable>
+        <name>accent-color</name>
+        <label>포인트 컬러</label>
+        <description><![CDATA[ 카테고리 강조 등에 사용될 포인트 색상입니다. ]]></description>
+        <type>COLOR</type>
+        <default>#ff5544</default>
+      </variable>
+      <variable>
+        <name>default-dark-mode</name>
+        <label>다크모드 기본값</label>
+        <description><![CDATA[ 접속 시 다크모드를 기본으로 적용할지 설정합니다. ]]></description>
+        <type>BOOL</type>
+        <default>false</default>
+      </variable>
+    </variablegroup>
+  </variables>
+
+  <default>
+    <liststyle>grid</liststyle>
+    <recentEntries>9</recentEntries>
+    <recentComments>5</recentComments>
+    <lengthOfRecentEntry>32</lengthOfRecentEntry>
+  </default>
+</skin>

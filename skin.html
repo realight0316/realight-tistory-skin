@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko" class="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[##_page_title_##] :: [##_title_##]</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#333333",
+                        "accent": "[##_var_accent-color_##]",
+                        "background-light": "#ffffff",
+                        "background-dark": "#1e1e1e",
+                        "surface-light": "#f4f4f4",
+                        "surface-dark": "#2c2c2c",
+                        "text-primary-light": "#333333",
+                        "text-primary-dark": "#e0e0e0",
+                        "text-secondary-light": "#666666",
+                        "text-secondary-dark": "#aaaaaa",
+                    },
+                    fontFamily: {
+                        "display": ["Gowun Dodum", "sans-serif"],
+                        "body": ["Gowun Dodum", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body id="[##_body_id_##]"
+    class="bg-background-light dark:bg-background-dark font-body text-text-primary-light dark:text-text-primary-dark min-h-screen flex flex-col md:flex-row transition-colors duration-300">
+    <s_t3>
+        <header
+            class="md:hidden sticky top-0 z-50 w-full border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] flex items-center justify-between px-4 h-16">
+            <a class="text-xl font-bold tracking-tight" href="[##_blog_url_##]">[##_title_##]</a>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleDarkMode()" class="p-2 text-text-secondary-light dark:text-text-secondary-dark">
+                    <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+                    <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+                </button>
+            </div>
+        </header>
+
+        <aside
+            class="hidden md:flex flex-col w-[280px] lg:w-[320px] fixed h-full border-r border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] z-40">
+            <div class="flex-1 overflow-y-auto no-scrollbar p-8 flex flex-col h-full">
+                <div class="flex flex-col items-center text-center mb-10">
+                    <div class="w-24 h-24 rounded-full bg-slate-100 mb-5 overflow-hidden ring-1 ring-slate-200">
+                        <img src="[##_image_##]" alt="프로필" class="w-full h-full object-cover">
+                    </div>
+                    <h1 class="text-2xl font-bold mb-2">[##_title_##]</h1>
+                    <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+                        [##_var_sidebar-profile-msg_##]
+                    </p>
+                </div>
+
+                <s_search>
+                    <div class="relative mb-10 group">
+                        <input type="text" name="[##_search_name_##]" value="[##_search_text_##]"
+                            onkeypress="if(event.keyCode == 13){ [##_search_onclick_submit_##] }"
+                            class="w-full bg-surface-light dark:bg-surface-dark border-none rounded-lg py-2.5 pl-4 pr-10 text-sm text-text-primary-light dark:text-white placeholder-text-secondary-light dark:placeholder-zinc-600 focus:ring-1 focus:ring-accent transition-shadow font-body"
+                            placeholder="검색어를 입력하세요">
+                        <button onclick="[##_search_onclick_submit_##]"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-text-secondary-dark hover:text-accent transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">search</span>
+                        </button>
+                    </div>
+                </s_search>
+
+                <s_sidebar>
+                    <s_sidebar_element>
+                        <div class="mb-10">
+                            <h2
+                                class="text-sm font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider mb-4 pb-2 border-b border-slate-100 dark:border-zinc-800">
+                                게시판 목록
+                            </h2>
+                            <nav class="category-list">
+                                [##_category_list_##]
+                            </nav>
+                        </div>
+                    </s_sidebar_element>
+
+                </s_sidebar>
+
+                <div class="mt-auto pt-6 border-t border-slate-100 dark:border-zinc-800">
+                    <div class="flex justify-between items-center mb-4">
+                        <button onclick="toggleDarkMode()"
+                            class="text-sm font-medium flex items-center gap-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-accent transition-colors">
+                            <span class="material-symbols-outlined text-[16px] dark:hidden">dark_mode</span>
+                            <span class="material-symbols-outlined text-[16px] hidden dark:block">light_mode</span>
+                            <span class="dark:hidden">Dark Mode</span>
+                            <span class="hidden dark:inline">Light Mode</span>
+                        </button>
+                        <div class="flex gap-3">
+                            <s_if_var_show-rss><a
+                                    class="text-text-secondary-light dark:text-text-secondary-dark hover:text-accent"
+                                    href="[##_rss_url_##]"><span
+                                        class="material-symbols-outlined text-[20px]">rss_feed</span></a></s_if_var_show-rss>
+                        </div>
+                    </div>
+                    <p class="text-xs text-center text-text-secondary-light dark:text-zinc-600">©
+                        [##_title_##].<br>Designed by Realight in Korea</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 w-full md:ml-[280px] lg:ml-[320px]">
+            <div class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-12 lg:py-12">
+
+                <s_list>
+                    <div class="max-w-6xl mx-auto px-4">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 mb-12">
+                            <s_list_rep>
+                                <article
+                                    class="group flex flex-col rounded-xl border border-slate-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#252525]">
+                                    <a href="[##_list_rep_link_##]">
+                                        <div class="relative w-full aspect-[4/3] overflow-hidden bg-surface-light">
+                                            <s_list_rep_thumbnail>
+                                                <img src="[##_list_rep_thumbnail_url_##]"
+                                                    class="absolute inset-0 h-full w-full object-cover">
+                                            </s_list_rep_thumbnail>
+                                        </div>
+                                        <div class="p-5">
+                                            <span
+                                                class="text-[11px] font-bold text-accent uppercase">[##_list_rep_category_##]</span>
+                                            <h3 class="text-xl font-bold mt-1 text-text-primary-light dark:text-white">
+                                                [##_list_rep_title_##]</h3>
+                                            <p
+                                                class="text-base text-text-secondary-light dark:text-text-secondary-dark line-clamp-2 mt-2">
+                                                [##_list_rep_summary_##]</p>
+                                        </div>
+                                    </a>
+                                </article>
+                            </s_list_rep>
+                        </div>
+                    </div>
+                </s_list>
+
+                <s_article_rep>
+                    <s_permalink_article_rep>
+                        <div class="max-w-4xl mx-auto">
+                            <header class="text-center mb-10">
+                                <a class="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-zinc-800 text-accent text-xs font-bold uppercase mb-5"
+                                    href="[##_article_rep_category_link_##]">[##_article_rep_category_##]</a>
+                                <h1
+                                    class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight break-keep text-text-primary-light dark:text-white">
+                                    [##_article_rep_title_##]</h1>
+                                <div
+                                    class="flex items-center justify-center gap-4 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                    <span
+                                        class="font-medium text-text-primary-light dark:text-white">[##_article_rep_author_##]</span>
+                                    <span class="text-slate-300 dark:text-zinc-700">|</span>
+                                    <span>[##_article_rep_date_##]</span>
+                                </div>
+                            </header>
+
+                            <article
+                                class="entry-content text-lg text-text-primary-light dark:text-text-primary-dark leading-loose font-body mb-16">
+                                [##_article_rep_desc_##]
+                            </article>
+
+                            <s_tag_label>
+                                <div class="mt-16 pt-8 border-t border-slate-100 dark:border-zinc-800">
+                                    <div class="flex items-start gap-3">
+                                        <span
+                                            class="text-sm font-bold text-text-primary-light dark:text-white mt-1">Tags:</span>
+                                        <div class="post-tags-container flex flex-wrap gap-2">
+                                            [##_tag_label_rep_##]
+                                        </div>
+                                    </div>
+                                </div>
+                            </s_tag_label>
+
+                            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
+                                <s_article_prev>
+                                    <a class="group relative p-6 border border-slate-200 dark:border-zinc-800 rounded-xl hover:border-accent/50 transition-all bg-white dark:bg-[#252525]"
+                                        href="[##_article_prev_link_##]">
+                                        <span
+                                            class="block text-xs font-bold text-zinc-500 uppercase mb-2">Previous</span>
+                                        <span
+                                            class="text-lg font-bold line-clamp-1 group-hover:text-accent transition-colors">[##_article_prev_title_##]</span>
+                                    </a>
+                                </s_article_prev>
+                                <s_article_next>
+                                    <a class="group relative p-6 border border-slate-200 dark:border-zinc-800 rounded-xl hover:border-accent/50 transition-all bg-white dark:bg-[#252525] text-right"
+                                        href="[##_article_next_link_##]">
+                                        <span class="block text-xs font-bold text-zinc-500 uppercase mb-2">Next</span>
+                                        <span
+                                            class="text-lg font-bold line-clamp-1 group-hover:text-accent transition-colors">[##_article_next_title_##]</span>
+                                    </a>
+                                </s_article_next>
+                            </div>
+
+                            <s_rp>
+                                <div class="mt-20 scroll-mt-20 border-t border-slate-100 dark:border-zinc-800 pt-16"
+                                    id="comments">
+                                    <h3
+                                        class="text-xl font-bold text-text-primary-light dark:text-white mb-8 flex items-center gap-2">
+                                        Comments
+                                        <span
+                                            class="bg-slate-100 dark:bg-zinc-800 text-text-secondary-light dark:text-text-secondary-dark text-xs py-0.5 px-2 rounded-full">[##_article_rep_rp_cnt_##]</span>
+                                    </h3>
+
+                                    <s_rp_input_form>
+                                        <div class="mb-12 bg-surface-light dark:bg-[#252525] p-6 rounded-xl">
+                                            <div class="flex gap-4">
+                                                <div
+                                                    class="hidden sm:flex w-10 h-10 rounded-full bg-slate-200 dark:bg-zinc-700 items-center justify-center flex-shrink-0">
+                                                    <span class="material-symbols-outlined text-slate-400">person</span>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <textarea name="[##_rp_input_comment_##]"
+                                                        class="w-full bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-lg p-3 text-sm text-text-primary-light dark:text-white placeholder-text-secondary-light dark:placeholder-zinc-600 focus:ring-1 focus:ring-accent focus:border-accent transition-all font-body resize-none min-h-[100px]"
+                                                        placeholder="댓글을 입력하세요..."></textarea>
+                                                    <div class="flex flex-wrap justify-between items-center mt-3 gap-3">
+                                                        <div class="flex gap-2">
+                                                            <s_rp_member>
+                                                                <s_rp_not_logged_in>
+                                                                    <input type="text" name="[##_rp_input_name_##]"
+                                                                        value="[##_guest_name_##]" placeholder="이름"
+                                                                        class="text-xs border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded px-2 py-1 w-24 focus:ring-1 focus:ring-accent outline-none">
+                                                                    <input type="password"
+                                                                        name="[##_rp_input_password_##]"
+                                                                        value="[##_rp_admin_password_##]"
+                                                                        placeholder="암호"
+                                                                        class="text-xs border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded px-2 py-1 w-24 focus:ring-1 focus:ring-accent outline-none">
+                                                                </s_rp_not_logged_in>
+                                                            </s_rp_member>
+                                                        </div>
+                                                        <button type="submit" onclick="[##_rp_onclick_submit_##]"
+                                                            class="px-5 py-2 bg-primary text-white dark:bg-white dark:text-black rounded-lg text-sm font-bold hover:bg-black dark:hover:bg-slate-200 transition-colors">Post
+                                                            Comment</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </s_rp_input_form>
+
+                                    <div class="space-y-8">
+                                        <s_rp_container>
+                                            <s_rp_rep>
+                                                <div id="[##_rp_rep_id_##]" class="group [##_rp_rep_class_##]">
+                                                    <div class="flex gap-4">
+                                                        <div
+                                                            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex-shrink-0 overflow-hidden border border-slate-200 dark:border-zinc-700">
+                                                            <img src="[##_rp_rep_logo_##]"
+                                                                class="w-full h-full object-cover"
+                                                                onerror="this.style.display='none'">
+                                                        </div>
+                                                        <div class="flex-1">
+                                                            <div class="flex items-center gap-2 mb-1">
+                                                                <span
+                                                                    class="font-bold text-text-primary-light dark:text-white text-sm">[##_rp_rep_name_##]</span>
+                                                                <span
+                                                                    class="text-xs text-text-secondary-light dark:text-zinc-600">•</span>
+                                                                <span
+                                                                    class="text-xs text-text-secondary-light dark:text-zinc-500">[##_rp_rep_date_##]</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-sm text-text-primary-light dark:text-text-secondary-dark leading-relaxed mb-2">
+                                                                [##_rp_rep_desc_##]
+                                                            </p>
+                                                            <div class="flex items-center gap-4">
+                                                                <a href="#" onclick="[##_rp_rep_onclick_reply_##]"
+                                                                    class="text-xs font-bold text-text-secondary-light hover:text-accent dark:text-zinc-500 dark:hover:text-white transition-colors">Reply</a>
+                                                                <a href="#" onclick="[##_rp_rep_onclick_delete_##]"
+                                                                    class="text-xs font-bold text-text-secondary-light hover:text-accent dark:text-zinc-500 dark:hover:text-white transition-colors">Edit/Del</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <s_rp2_container>
+                                                        <s_rp2_rep>
+                                                            <div id="[##_rp_rep_id_##]"
+                                                                class="flex gap-4 mt-6 ml-14 pt-6 border-t border-slate-100 dark:border-zinc-800/50 [##_rp_rep_class_##]">
+                                                                <div
+                                                                    class="w-8 h-8 rounded-full bg-slate-200 dark:bg-zinc-700 flex-shrink-0 overflow-hidden">
+                                                                    <img src="[##_rp_rep_logo_##]"
+                                                                        class="w-full h-full object-cover">
+                                                                </div>
+                                                                <div class="flex-1">
+                                                                    <div class="flex items-center gap-2 mb-1">
+                                                                        <span
+                                                                            class="font-bold text-text-primary-light dark:text-white text-sm">[##_rp_rep_name_##]</span>
+                                                                        <span
+                                                                            class="text-xs text-text-secondary-light dark:text-zinc-600">•</span>
+                                                                        <span
+                                                                            class="text-xs text-text-secondary-light dark:text-zinc-500">[##_rp_rep_date_##]</span>
+                                                                    </div>
+                                                                    <p
+                                                                        class="text-sm text-text-primary-light dark:text-text-secondary-dark leading-relaxed mb-2">
+                                                                        [##_rp_rep_desc_##]
+                                                                    </p>
+                                                                    <div class="flex items-center gap-4">
+                                                                        <a href="#"
+                                                                            onclick="[##_rp_rep_onclick_delete_##]"
+                                                                            class="text-xs font-bold text-text-secondary-light hover:text-accent dark:text-zinc-500 dark:hover:text-white transition-colors">Edit/Del</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </s_rp2_rep>
+                                                    </s_rp2_container>
+                                                </div>
+                                            </s_rp_rep>
+                                        </s_rp_container>
+                                    </div>
+                                </div>
+                            </s_rp>
+                        </div>
+                    </s_permalink_article_rep>
+                </s_article_rep>
+
+            </div>
+        </main>
+    </s_t3>
+
+    <script>
+        // 다크모드 토글 스크립트 복구
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 1. 카테고리 리스트 요소 선택
+            const categoryList = document.querySelector('.category-list');
+            if (!categoryList) return;
+
+            // 2. 모든 리스트 항목(li)을 가져옴
+            const parentItems = categoryList.querySelectorAll('li');
+
+            parentItems.forEach(item => {
+                const subList = item.querySelector('.sub_category_list');
+                const link = item.querySelector('a');
+
+                // [추가된 예외 처리]
+                // 링크가 없거나, '전체글 보기'(/category)인 경우 화살표 생성 안 함
+                if (!link) return;
+                const href = link.getAttribute('href');
+                // href가 '/category'이거나 텍스트에 '전체글'이 포함되어 있으면 건너뜀
+                if (href === '/category' || link.innerText.includes('전체글')) return;
+
+                // 3. 하위 카테고리 리스트가 존재하고, 실제로 내용물(li)이 들어있는 경우에만 실행
+                if (subList && subList.children.length > 0) {
+
+                    // 링크와 화살표를 감싸는 컨테이너 처리
+                    link.style.display = 'flex';
+                    link.style.alignItems = 'center';
+                    link.style.justifyContent = 'space-between';
+
+                    // 화살표 아이콘 생성
+                    const toggleBtn = document.createElement('span');
+                    toggleBtn.className = 'material-symbols-outlined text-[18px] cursor-pointer transition-transform duration-300 hover:text-accent';
+                    toggleBtn.innerText = 'expand_more'; // 아래 화살표
+                    toggleBtn.style.marginLeft = 'auto'; // 우측 정렬
+
+                    // 클릭 이벤트: 하위 메뉴 토글
+                    toggleBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const isOpen = subList.style.display === 'block';
+
+                        if (isOpen) {
+                            subList.style.display = 'none';
+                            toggleBtn.style.transform = 'rotate(0deg)';
+                        } else {
+                            subList.style.display = 'block';
+                            toggleBtn.style.transform = 'rotate(180deg)';
+                        }
+                    });
+
+                    // 링크 안에 화살표 추가
+                    link.appendChild(toggleBtn);
+
+                    // 4. 초기 상태 설정
+                    // 현재 선택된 카테고리(link_selected)가 아니면 닫아두기
+                    // 단, 하위 메뉴 중 하나라도 선택된 상태라면 열어두기
+                    if (!item.querySelector('.link_selected')) {
+                        subList.style.display = 'none';
+                    } else {
+                        subList.style.display = 'block';
+                        toggleBtn.style.transform = 'rotate(180deg)';
+                    }
+                }
+            });
+        });
+    </script>
+
+    <style>
+        /* 1. 버튼 스타일 정의 */
+        #custom-back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background-color: #333;
+            /* 버튼 배경색 (다크 그레이) */
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 0;
+        }
+
+        /* 2. 이미지 아이콘 스타일 */
+        #custom-back-to-top img {
+            width: 20px;
+            /* 아이콘 크기 (적절히 조절하세요) */
+            height: auto;
+            display: block;
+
+            /* [중요] 검은색 아이콘을 흰색으로 변경하는 필터 */
+            /* 만약 이미지가 원래 흰색이라면 이 줄(filter...)을 지우세요 */
+            filter: invert(100%);
+
+            transition: all 0.3s ease;
+        }
+
+        /* 3. 스크롤 시 표시 */
+        #custom-back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            bottom: 30px;
+        }
+
+        /* 4. 호버 효과 */
+        #custom-back-to-top:hover {
+            background-color: #000;
+            /* 배경 더 어둡게 */
+            transform: translateY(-3px);
+        }
+
+        /* 5. 다크모드 대응 */
+        html.dark #custom-back-to-top {
+            background-color: #f5f5f7;
+            /* 다크모드에선 밝은 배경 */
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        /* 다크모드에서는 배경이 밝으므로, 아이콘을 다시 검은색(원본)으로 돌림 */
+        html.dark #custom-back-to-top img {
+            filter: none;
+        }
+
+        html.dark #custom-back-to-top:hover {
+            background-color: #fff;
+        }
+    </style>
+
+    <button id="custom-back-to-top" title="맨 위로" aria-label="맨 위로 이동">
+        <img src="./images/up.png" alt="맨 위로">
+    </button>
+
+    <script>
+        (function () {
+            const topBtn = document.getElementById("custom-back-to-top");
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 300) {
+                    topBtn.classList.add("show");
+                } else {
+                    topBtn.classList.remove("show");
+                }
+            });
+
+            topBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+        })();
+    </script>
+    <style>
+        /* 1. 핵심 레이아웃 요소들의 전환 효과 통일 */
+        body,
+        #sidebar,
+        #index,
+        #header,
+        footer,
+        .bg-h-100,
+        .bg-h-200,
+        .bg-h-800,
+        .dark\:bg-h-700 {
+            /* 배경색, 글자색, 테두리 색상을 0.3초 동안 부드럽게 변경 */
+            /* 'left'는 사이드바 열림/닫힘 기능을 위해 필수 유지 */
+            transition-property: background-color, color, border-color, left !important;
+            transition-duration: 0.3s !important;
+            transition-timing-function: ease !important;
+        }
+
+        /* 2. 사이드바 내부 요소들도 부드럽게 (선택 사항) */
+        #sidebar .el,
+        #sidebar .profile,
+        #sidebar .tit {
+            transition: color 0.3s ease, border-color 0.3s ease !important;
+        }
+    </style>
+</body>
+
+</html>
