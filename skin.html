@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[##_page_title_##] :: [##_title_##]</title>
     <link rel="stylesheet" href="./style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         tailwind.config = {
@@ -34,10 +33,23 @@
             },
         }
     </script>
+    <script>
+        // FOUC 방지: 다크모드 초기화를 head에서 실행
+        (function() {
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            }
+        })();
+    </script>
 </head>
 
 <body id="[##_body_id_##]"
     class="bg-background-light dark:bg-background-dark font-body text-text-primary-light dark:text-text-primary-dark min-h-screen flex flex-col md:flex-row transition-colors duration-300">
+
+    <!-- 접근성: 건너뛰기 링크 -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded">본문 바로가기</a>
+
     <s_t3>
         <header
             class="md:hidden sticky top-0 z-50 w-full border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] flex items-center justify-between px-4 h-16">
@@ -55,7 +67,7 @@
             <div class="flex-1 overflow-y-auto no-scrollbar p-8 flex flex-col h-full">
                 <div class="flex flex-col items-center text-center mb-10">
                     <div class="w-24 h-24 rounded-full bg-slate-100 mb-5 overflow-hidden ring-1 ring-slate-200">
-                        <img src="[##_image_##]" alt="프로필" class="w-full h-full object-cover">
+                        <img src="[##_image_##]" alt="[##_title_##] 블로그 프로필 이미지" class="w-full h-full object-cover">
                     </div>
                     <h1 class="text-2xl font-bold mb-2">[##_title_##]</h1>
                     <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
@@ -64,29 +76,32 @@
                 </div>
 
                 <s_search>
-                    <div class="relative mb-10 group">
-                        <input type="text" name="[##_search_name_##]" value="[##_search_text_##]"
+                    <div role="search" class="relative mb-10 group">
+                        <label for="search-input" class="sr-only">블로그 검색</label>
+                        <input type="text" id="search-input" name="[##_search_name_##]" value="[##_search_text_##]"
                             onkeypress="if(event.keyCode == 13){ [##_search_onclick_submit_##] }"
                             class="w-full bg-surface-light dark:bg-surface-dark border-none rounded-lg py-2.5 pl-4 pr-10 text-sm text-text-primary-light dark:text-white placeholder-text-secondary-light dark:placeholder-zinc-600 focus:ring-1 focus:ring-accent transition-shadow font-body"
-                            placeholder="검색어를 입력하세요">
-                        <button onclick="[##_search_onclick_submit_##]"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-text-secondary-dark hover:text-accent transition-colors">
-                            <span class="material-symbols-outlined text-[20px]">search</span>
+                            placeholder="검색어를 입력하세요"
+                            aria-label="검색어 입력">
+                        <button type="button" onclick="[##_search_onclick_submit_##]"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-text-secondary-dark hover:text-accent transition-colors"
+                            aria-label="검색">
+                            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">search</span>
                         </button>
                     </div>
                 </s_search>
 
                 <s_sidebar>
                     <s_sidebar_element>
-                        <div class="mb-10">
+                        <nav class="mb-10" aria-label="카테고리">
                             <h2
                                 class="text-sm font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider mb-4 pb-2 border-b border-slate-100 dark:border-zinc-800">
                                 게시판 목록
                             </h2>
-                            <nav class="category-list">
+                            <div class="category-list">
                                 [##_category_list_##]
-                            </nav>
-                        </div>
+                            </div>
+                        </nav>
                     </s_sidebar_element>
 
                 </s_sidebar>
@@ -113,7 +128,16 @@
             </div>
         </aside>
 
-        <main class="flex-1 w-full md:ml-[280px] lg:ml-[320px]">
+        <main id="main-content" class="flex-1 w-full md:ml-[280px] lg:ml-[320px]">
+            <!-- 하위 카테고리 네비게이션 바 -->
+            <div id="subcategory-nav" class="hidden border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] sticky top-0 z-30">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12">
+                    <div class="flex items-center gap-2 py-3 overflow-x-auto no-scrollbar">
+                        <!-- JavaScript로 동적 생성 -->
+                    </div>
+                </div>
+            </div>
+
             <div class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-12 lg:py-12">
 
                 <s_list>
@@ -124,7 +148,7 @@
                                 <article
                                     class="group flex flex-col rounded-xl border border-slate-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#252525]">
                                     <a href="[##_list_rep_link_##]">
-                                        <div class="relative w-full aspect-[4/3] overflow-hidden bg-surface-light">
+                                        <div class="relative w-full aspect-square overflow-hidden bg-surface-light">
                                             <s_list_rep_thumbnail>
                                                 <img src="[##_list_rep_thumbnail_url_##]"
                                                     class="absolute inset-0 h-full w-full object-cover">
@@ -325,211 +349,335 @@
     </s_t3>
 
     <script>
-        // 다크모드 토글 스크립트 복구
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+        // 전역 네임스페이스 오염 방지
+        (function() {
+            'use strict';
+
+            // 다크모드 토글 함수
+            window.toggleDarkMode = function() {
+                const html = document.documentElement;
+                const isDark = html.classList.contains('dark');
+
+                if (isDark) {
+                    html.classList.remove('dark');
+                    html.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.remove('light');
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            };
+        })();
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // 1. 카테고리 리스트 요소 선택
-            const categoryList = document.querySelector('.category-list');
-            if (!categoryList) return;
+        // 카테고리 토글 기능
+        (function() {
+            'use strict';
 
-            // 2. 모든 리스트 항목(li)을 가져옴
-            const parentItems = categoryList.querySelectorAll('li');
+            function initCategoryToggle() {
+                const categoryList = document.querySelector('.category-list');
+                if (!categoryList) return;
 
-            parentItems.forEach(item => {
-                const subList = item.querySelector('.sub_category_list');
-                const link = item.querySelector('a');
+                const parentItems = categoryList.querySelectorAll('li');
 
-                // [추가된 예외 처리]
-                // 링크가 없거나, '전체글 보기'(/category)인 경우 화살표 생성 안 함
-                if (!link) return;
-                const href = link.getAttribute('href');
-                // href가 '/category'이거나 텍스트에 '전체글'이 포함되어 있으면 건너뜀
-                if (href === '/category' || link.innerText.includes('전체글')) return;
+                parentItems.forEach(item => {
+                    const subList = item.querySelector('.sub_category_list');
+                    const link = item.querySelector('a');
 
-                // 3. 하위 카테고리 리스트가 존재하고, 실제로 내용물(li)이 들어있는 경우에만 실행
-                if (subList && subList.children.length > 0) {
+                    if (!link) return;
 
-                    // 링크와 화살표를 감싸는 컨테이너 처리
-                    link.style.display = 'flex';
-                    link.style.alignItems = 'center';
-                    link.style.justifyContent = 'space-between';
+                    const href = link.getAttribute('href');
+                    if (href === '/category' || link.innerText.includes('전체글')) return;
 
-                    // 화살표 아이콘 생성
-                    const toggleBtn = document.createElement('span');
-                    toggleBtn.className = 'material-symbols-outlined text-[18px] cursor-pointer transition-transform duration-300 hover:text-accent';
-                    toggleBtn.innerText = 'expand_more'; // 아래 화살표
-                    toggleBtn.style.marginLeft = 'auto'; // 우측 정렬
+                    if (subList && subList.children.length > 0) {
+                        link.style.display = 'flex';
+                        link.style.alignItems = 'center';
+                        link.style.justifyContent = 'space-between';
 
-                    // 클릭 이벤트: 하위 메뉴 토글
-                    toggleBtn.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                        const toggleBtn = document.createElement('span');
+                        toggleBtn.className = 'material-symbols-outlined text-[18px] cursor-pointer transition-transform duration-300 hover:text-accent';
+                        toggleBtn.textContent = 'expand_more';
+                        toggleBtn.style.marginLeft = 'auto';
+                        toggleBtn.setAttribute('aria-label', '하위 카테고리 펼치기');
+                        toggleBtn.setAttribute('role', 'button');
 
-                        const isOpen = subList.style.display === 'block';
+                        toggleBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
 
-                        if (isOpen) {
+                            const isOpen = subList.style.display === 'block';
+
+                            if (isOpen) {
+                                subList.style.display = 'none';
+                                toggleBtn.style.transform = 'rotate(0deg)';
+                                toggleBtn.setAttribute('aria-label', '하위 카테고리 펼치기');
+                            } else {
+                                subList.style.display = 'block';
+                                toggleBtn.style.transform = 'rotate(180deg)';
+                                toggleBtn.setAttribute('aria-label', '하위 카테고리 접기');
+                            }
+                        });
+
+                        link.appendChild(toggleBtn);
+
+                        const hasSelected = item.querySelector('.link_selected');
+                        if (!hasSelected) {
                             subList.style.display = 'none';
-                            toggleBtn.style.transform = 'rotate(0deg)';
                         } else {
                             subList.style.display = 'block';
                             toggleBtn.style.transform = 'rotate(180deg)';
+                            toggleBtn.setAttribute('aria-label', '하위 카테고리 접기');
                         }
-                    });
-
-                    // 링크 안에 화살표 추가
-                    link.appendChild(toggleBtn);
-
-                    // 4. 초기 상태 설정
-                    // 현재 선택된 카테고리(link_selected)가 아니면 닫아두기
-                    // 단, 하위 메뉴 중 하나라도 선택된 상태라면 열어두기
-                    if (!item.querySelector('.link_selected')) {
-                        subList.style.display = 'none';
-                    } else {
-                        subList.style.display = 'block';
-                        toggleBtn.style.transform = 'rotate(180deg)';
                     }
-                }
-            });
-        });
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', initCategoryToggle);
+        })();
     </script>
-
-    <style>
-        /* 1. 버튼 스타일 정의 */
-        #custom-back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 9999;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            background-color: #333;
-            /* 버튼 배경색 (다크 그레이) */
-            border: none;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 0;
-        }
-
-        /* 2. 이미지 아이콘 스타일 */
-        #custom-back-to-top img {
-            width: 20px;
-            /* 아이콘 크기 (적절히 조절하세요) */
-            height: auto;
-            display: block;
-
-            /* [중요] 검은색 아이콘을 흰색으로 변경하는 필터 */
-            /* 만약 이미지가 원래 흰색이라면 이 줄(filter...)을 지우세요 */
-            filter: invert(100%);
-
-            transition: all 0.3s ease;
-        }
-
-        /* 3. 스크롤 시 표시 */
-        #custom-back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-            bottom: 30px;
-        }
-
-        /* 4. 호버 효과 */
-        #custom-back-to-top:hover {
-            background-color: #000;
-            /* 배경 더 어둡게 */
-            transform: translateY(-3px);
-        }
-
-        /* 5. 다크모드 대응 */
-        html.dark #custom-back-to-top {
-            background-color: #f5f5f7;
-            /* 다크모드에선 밝은 배경 */
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-        }
-
-        /* 다크모드에서는 배경이 밝으므로, 아이콘을 다시 검은색(원본)으로 돌림 */
-        html.dark #custom-back-to-top img {
-            filter: none;
-        }
-
-        html.dark #custom-back-to-top:hover {
-            background-color: #fff;
-        }
-    </style>
 
     <button id="custom-back-to-top" title="맨 위로" aria-label="맨 위로 이동">
         <img src="./images/up.png" alt="맨 위로">
     </button>
 
     <script>
-        (function () {
-            const topBtn = document.getElementById("custom-back-to-top");
+        // Back to Top 버튼 기능
+        (function() {
+            'use strict';
 
-            window.addEventListener("scroll", function () {
+            const topBtn = document.getElementById('custom-back-to-top');
+            if (!topBtn) return;
+
+            let ticking = false;
+
+            function updateButtonVisibility() {
                 if (window.scrollY > 300) {
-                    topBtn.classList.add("show");
+                    topBtn.classList.add('show');
                 } else {
-                    topBtn.classList.remove("show");
+                    topBtn.classList.remove('show');
+                }
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateButtonVisibility);
+                    ticking = true;
                 }
             });
 
-            topBtn.addEventListener("click", function (e) {
+            topBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 window.scrollTo({
                     top: 0,
-                    behavior: "smooth"
+                    behavior: 'smooth'
                 });
             });
         })();
     </script>
-    <style>
-        /* 1. 핵심 레이아웃 요소들의 전환 효과 통일 */
-        body,
-        #sidebar,
-        #index,
-        #header,
-        footer,
-        .bg-h-100,
-        .bg-h-200,
-        .bg-h-800,
-        .dark\:bg-h-700 {
-            /* 배경색, 글자색, 테두리 색상을 0.3초 동안 부드럽게 변경 */
-            /* 'left'는 사이드바 열림/닫힘 기능을 위해 필수 유지 */
-            transition-property: background-color, color, border-color, left !important;
-            transition-duration: 0.3s !important;
-            transition-timing-function: ease !important;
-        }
 
-        /* 2. 사이드바 내부 요소들도 부드럽게 (선택 사항) */
-        #sidebar .el,
-        #sidebar .profile,
-        #sidebar .tit {
-            transition: color 0.3s ease, border-color 0.3s ease !important;
-        }
-    </style>
+    <script>
+        // 하위 카테고리 네비게이션 바 표시
+        (function() {
+            'use strict';
+
+            function initSubcategoryNav() {
+                const categoryList = document.querySelector('.category-list');
+                const subcategoryNav = document.getElementById('subcategory-nav');
+
+                if (!categoryList || !subcategoryNav) {
+                    console.log('카테고리 리스트 또는 네비게이션 바를 찾을 수 없습니다.');
+                    return;
+                }
+
+                console.log('카테고리 리스트 HTML:', categoryList.innerHTML.substring(0, 500));
+
+                // 현재 URL 확인
+                const currentUrl = window.location.pathname;
+                console.log('현재 URL:', currentUrl);
+
+                // body id 확인 (티스토리는 category 페이지에서 특정 body id 사용)
+                const bodyId = document.body.id;
+                console.log('Body ID:', bodyId);
+
+                // 카테고리 페이지가 아니면 종료
+                if (!bodyId || (!bodyId.includes('category') && !bodyId.includes('tt-body-category'))) {
+                    console.log('카테고리 페이지가 아닙니다.');
+                    return;
+                }
+
+                // 전체글보기 페이지인지 확인 (URL이 정확히 /category인 경우)
+                if (currentUrl === '/category' || currentUrl === '/category/') {
+                    console.log('전체글보기 페이지에서는 네비게이션 바를 표시하지 않습니다.');
+                    return;
+                }
+
+                // 현재 선택된 카테고리 찾기 - 여러 방법 시도
+                let selectedLinks = categoryList.querySelectorAll('a.link_selected');
+
+                // link_selected가 없으면 현재 URL과 일치하는 링크 찾기
+                if (selectedLinks.length === 0) {
+                    console.log('.link_selected 클래스가 없습니다. URL 매칭으로 찾습니다.');
+                    const allLinks = categoryList.querySelectorAll('a');
+                    allLinks.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && (currentUrl === href || currentUrl.startsWith(href + '/'))) {
+                            selectedLinks = [link];
+                            console.log('URL 매칭으로 찾은 링크:', href);
+                        }
+                    });
+                }
+
+                console.log('선택된 링크 개수:', selectedLinks.length);
+
+                if (selectedLinks.length === 0) {
+                    console.log('선택된 카테고리가 없습니다.');
+                    return;
+                }
+
+                let selectedCategory = null;
+                let subCategoryList = null;
+                let parentLink = null;
+                let hasSubCategories = false;
+
+                // 선택된 링크 중에서 하위 카테고리가 있는 상위 카테고리 찾기
+                Array.from(selectedLinks).forEach(link => {
+                    const parentLi = link.closest('li');
+                    if (!parentLi) return;
+
+                    // 이 li가 하위 카테고리를 가지고 있는지 확인
+                    const subList = parentLi.querySelector('.sub_category_list');
+
+                    if (subList && subList.children.length > 0) {
+                        // 이 카테고리가 상위 카테고리이고 선택되어 있음
+                        selectedCategory = parentLi;
+                        subCategoryList = subList;
+                        parentLink = link;
+                        hasSubCategories = true;
+                        console.log('상위 카테고리 선택됨:', link.textContent.trim());
+                    } else {
+                        // 하위 카테고리가 선택되어 있는 경우, 그 부모 찾기
+                        const parentSubList = parentLi.closest('.sub_category_list');
+                        if (parentSubList) {
+                            const parentLiOfSubList = parentSubList.parentElement.closest('li');
+                            if (parentLiOfSubList) {
+                                selectedCategory = parentLiOfSubList;
+                                subCategoryList = parentSubList;
+                                parentLink = parentLiOfSubList.querySelector('a');
+                                hasSubCategories = true;
+                                console.log('하위 카테고리 선택됨, 부모:', parentLink ? parentLink.textContent.trim() : '');
+                            }
+                        } else {
+                            // 하위 카테고리가 없는 상위 카테고리인 경우
+                            selectedCategory = parentLi;
+                            parentLink = link;
+                            hasSubCategories = false;
+                            console.log('하위 카테고리가 없는 카테고리 선택됨:', link.textContent.trim());
+                        }
+                    }
+                });
+
+                if (!selectedCategory || !parentLink) {
+                    console.log('선택된 카테고리를 찾을 수 없습니다.');
+                    return;
+                }
+
+                // 네비게이션 바 컨테이너
+                const navContainer = subcategoryNav.querySelector('.flex');
+                if (!navContainer) {
+                    console.log('네비게이션 컨테이너를 찾을 수 없습니다.');
+                    return;
+                }
+
+                // 기존 내용 제거
+                navContainer.innerHTML = '';
+
+                // 상위 카테고리 정보 - expand_more 제거
+                let parentCategoryText = parentLink.textContent.trim();
+                // expand_more 텍스트 제거
+                parentCategoryText = parentCategoryText.replace(/expand_more/g, '').trim();
+                // 숫자(개수) 제거
+                parentCategoryText = parentCategoryText.replace(/\(\d+\)$/g, '').replace(/\d+$/g, '').trim();
+
+                const parentCategoryUrl = parentLink.getAttribute('href');
+
+                console.log('상위 카테고리 이름:', parentCategoryText);
+                console.log('상위 카테고리 URL:', parentCategoryUrl);
+                console.log('하위 카테고리 존재 여부:', hasSubCategories);
+
+                // 현재 URL 체크 (상위 카테고리 페이지인지)
+                const isParentPage = currentUrl === parentCategoryUrl;
+
+                console.log('현재 URL:', currentUrl, '/ 부모 URL:', parentCategoryUrl, '/ 일치:', isParentPage);
+
+                // "All" 버튼 추가 (상위 카테고리로 이동)
+                const allButton = document.createElement('a');
+                allButton.href = parentCategoryUrl;
+                allButton.className = 'px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all';
+                allButton.textContent = 'All';
+
+                if (isParentPage) {
+                    allButton.className += ' bg-accent text-white';
+                } else {
+                    allButton.className += ' bg-slate-100 dark:bg-zinc-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-slate-200 dark:hover:bg-zinc-700';
+                }
+
+                navContainer.appendChild(allButton);
+
+                // 하위 카테고리가 있는 경우에만 버튼 추가
+                if (hasSubCategories && subCategoryList) {
+                    let buttonCount = 0;
+                    Array.from(subCategoryList.children).forEach(subItem => {
+                        const subLink = subItem.querySelector('a');
+                        if (!subLink) return;
+
+                        // 카테고리 이름 추출 (개수 및 expand_more 제거)
+                        let fullText = subLink.textContent;
+                        fullText = fullText.replace(/expand_more/g, '').trim();
+                        const subCategoryName = fullText.replace(/\(\d+\)$/, '').replace(/\d+$/, '').trim();
+                        const subCategoryUrl = subLink.getAttribute('href');
+                        const isSelected = currentUrl === subCategoryUrl || subLink.classList.contains('link_selected');
+
+                        const button = document.createElement('a');
+                        button.href = subCategoryUrl;
+                        button.textContent = subCategoryName;
+                        button.className = 'px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all';
+
+                        if (isSelected) {
+                            button.className += ' bg-accent text-white';
+                        } else {
+                            button.className += ' bg-slate-100 dark:bg-zinc-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-slate-200 dark:hover:bg-zinc-700';
+                        }
+
+                        navContainer.appendChild(button);
+                        buttonCount++;
+                    });
+
+                    console.log('추가된 하위 카테고리 버튼 개수:', buttonCount);
+                } else {
+                    console.log('하위 카테고리가 없어서 전체 버튼만 표시합니다.');
+                }
+
+                // 네비게이션 바 표시
+                subcategoryNav.classList.remove('hidden');
+                console.log('하위 카테고리 네비게이션 바 표시 완료');
+            }
+
+            // DOM 로드 후 실행
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initSubcategoryNav);
+            } else {
+                // 이미 로드된 경우 즉시 실행
+                initSubcategoryNav();
+            }
+
+            // 추가: 페이지 완전히 로드된 후 한번 더 실행 (티스토리 동적 콘텐츠 대응)
+            window.addEventListener('load', function() {
+                setTimeout(initSubcategoryNav, 100);
+            });
+        })();
+    </script>
 </body>
 
 </html>
