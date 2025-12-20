@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ko" class="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[##_page_title_##] :: [##_title_##]</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#333333",
+                        "accent": "[##_var_accent-color_##]",
+                        "background-light": "#ffffff",
+                        "background-dark": "#1e1e1e",
+                        "surface-light": "#f4f4f4",
+                        "surface-dark": "#2c2c2c",
+                        "text-primary-light": "#333333",
+                        "text-primary-dark": "#e0e0e0",
+                        "text-secondary-light": "#666666",
+                        "text-secondary-dark": "#aaaaaa",
+                    },
+                    fontFamily: {
+                        "display": ["Gowun Dodum", "sans-serif"],
+                        "body": ["Gowun Dodum", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <script>
+        // FOUC 방지: 다크모드 초기화를 head에서 실행
+        (function() {
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            }
+        })();
+    </script>
+</head>
+
+<body id="[##_body_id_##]"
+    class="bg-background-light dark:bg-background-dark font-body text-text-primary-light dark:text-text-primary-dark min-h-screen flex flex-col md:flex-row transition-colors duration-300">
+
+    <!-- 접근성: 건너뛰기 링크 -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded">본문 바로가기</a>
+
+    <s_t3>
+        <header
+            class="md:hidden sticky top-0 z-50 w-full border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] flex items-center justify-between px-4 h-16">
+            <a class="text-xl font-bold tracking-tight" href="[##_blog_url_##]">[##_title_##]</a>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleDarkMode()" class="p-2 text-text-secondary-light dark:text-text-secondary-dark">
+                    <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+                    <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+                </button>
+            </div>
+        </header>
+
+        <aside
+            class="hidden md:flex flex-col w-[280px] lg:w-[320px] fixed h-full border-r border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] z-40">
+            <div class="flex-1 overflow-y-auto no-scrollbar p-8 flex flex-col h-full">
+                <div class="flex flex-col items-center text-center mb-10">
+                    <div class="w-24 h-24 rounded-full bg-slate-100 mb-5 overflow-hidden ring-1 ring-slate-200">
+                        <img src="[##_image_##]" alt="[##_title_##] 블로그 프로필 이미지" class="w-full h-full object-cover">
+                    </div>
+                    <h1 class="text-2xl font-bold mb-2">[##_title_##]</h1>
+                    <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+                        [##_var_sidebar-profile-msg_##]
+                    </p>
+                </div>
+
+                <s_search>
+                    <div role="search" class="relative mb-10 group">
+                        <label for="search-input" class="sr-only">블로그 검색</label>
+                        <input type="text" id="search-input" name="[##_search_name_##]" value="[##_search_text_##]"
+                            onkeypress="if(event.keyCode == 13){ [##_search_onclick_submit_##] }"
+                            class="w-full bg-surface-light dark:bg-surface-dark border-none rounded-lg py-2.5 pl-4 pr-10 text-sm text-text-primary-light dark:text-white placeholder-text-secondary-light dark:placeholder-zinc-600 focus:ring-1 focus:ring-accent transition-shadow font-body"
+                            placeholder="검색어를 입력하세요"
+                            aria-label="검색어 입력">
+                        <button type="button" onclick="[##_search_onclick_submit_##]"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-text-secondary-dark hover:text-accent transition-colors"
+                            aria-label="검색">
+                            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">search</span>
+                        </button>
+                    </div>
+                </s_search>
+
+                <s_sidebar>
+                    <s_sidebar_element>
+                        <nav class="mb-10" aria-label="카테고리">
+                            <h2
+                                class="text-sm font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider mb-4 pb-2 border-b border-slate-100 dark:border-zinc-800">
+                                게시판 목록
+                            </h2>
+                            <div class="category-list">
+                                [##_category_list_##]
+                            </div>
+                        </nav>
+                    </s_sidebar_element>
+
+                </s_sidebar>
+
+                <div class="mt-auto pt-6 border-t border-slate-100 dark:border-zinc-800">
+                    <div class="flex justify-between items-center mb-4">
+                        <button onclick="toggleDarkMode()"
+                            class="text-sm font-medium flex items-center gap-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-accent transition-colors">
+                            <span class="material-symbols-outlined text-[16px] dark:hidden">dark_mode</span>
+                            <span class="material-symbols-outlined text-[16px] hidden dark:block">light_mode</span>
+                            <span class="dark:hidden">Dark Mode</span>
+                            <span class="hidden dark:inline">Light Mode</span>
+                        </button>
+                        <div class="flex gap-3">
+                            <s_if_var_show-rss><a
+                                    class="text-text-secondary-light dark:text-text-secondary-dark hover:text-accent"
+                                    href="[##_rss_url_##]"><span
+                                        class="material-symbols-outlined text-[20px]">rss_feed</span></a></s_if_var_show-rss>
+                        </div>
+                    </div>
+                    <p class="text-xs text-center text-text-secondary-light dark:text-zinc-600">©
+                        [##_title_##].<br>Designed by Realight in Korea</p>
+                </div>
+            </div>
+        </aside>
+
+        <main id="main-content" class="flex-1 w-full md:ml-[280px] lg:ml-[320px]">
+            <!-- 하위 카테고리 네비게이션 바 -->
+            <div id="subcategory-nav" class="hidden border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] sticky top-0 z-30">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12">
+                    <div class="flex items-center gap-2 py-3 overflow-x-auto no-scrollbar">
+                        <!-- JavaScript로 동적 생성 -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-12 lg:py-12">
+
+                <s_list>
+                    <div class="max-w-6xl mx-auto px-4">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 mb-12">
+                            <s_list_rep>
+                                <article
+                                    class="group flex flex-col rounded-xl border border-slate-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#252525]">
+                                    <a href="[##_list_rep_link_##]">
+                                        <div class="relative w-full aspect-square overflow-hidden bg-surface-light">
+                                            <s_list_rep_thumbnail>
+                                                <img src="[##_list_rep_thumbnail_url_##]"
+                                                    class="absolute inset-0 h-full w-full object-cover">
+                                            </s_list_rep_thumbnail>
+                                        </div>
+                                        <div class="p-5">
+                                            <span
+                                                class="text-[11px] font-bold text-accent uppercase">[##_list_rep_category_##]</span>
+                                            <h3 class="text-xl font-bold mt-1 text-text-primary-light dark:text-white">
+                                                [##_list_rep_title_##]</h3>
+                                            <p
+                                                class="text-base text-text-secondary-light dark:text-text-secondary-dark line-clamp-2 mt-2">
+                                                [##_list_rep_summary_##]</p>
+                                        </div>
+                                    </a>
+                                </article>
+                            </s_list_rep>
+                        </div>
+                    </div>
+                </s_list>
+
+                <s_article_rep>
+                    <s_permalink_article_rep>
+                        <div class="max-w-4xl mx-auto">
+                            <header class="text-center mb-10">
+                                <a class="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-zinc-800 text-accent text-xs font-bold uppercase mb-5"
+                                    href="[##_article_rep_category_link_##]">[##_article_rep_category_##]</a>
+                                <h1
+                                    class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight break-keep text-text-primary-light dark:text-white">
+                                    [##_article_rep_title_##]</h1>
+                                <div
+                                    class="flex items-center justify-center gap-4 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                    <span
+                                        class="font-medium text-text-primary-light dark:text-white">[##_article_rep_author_##]</span>
+                                    <span class="text-slate-300 dark:text-zinc-700">|</span>
+                                    <span>[##_article_rep_date_##]</span>
+                                </div>
+                            </header>
+
+                            <article
+                                class="entry-content text-lg text-text-primary-light dark:text-text-primary-dark leading-loose font-body mb-16">
+                                [##_article_rep_desc_##]
+                            </article>
+
+                            <s_tag_label>
+                                <div class="mt-16 pt-8 border-t border-slate-100 dark:border-zinc-800">
+                                    <div class="flex items-start gap-3">
+                                        <span
+                                            class="text-sm font-bold text-text-primary-light dark:text-white mt-1">Tags:</span>
+                                        <div class="post-tags-container flex flex-wrap gap-2">
+                                            [##_tag_label_rep_##]
+                                        </div>
+                                    </div>
+                                </div>
+                            </s_tag_label>
+
+                            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
+                                <s_article_prev>
+                                    <a class="group relative p-6 border border-slate-200 dark:border-zinc-800 rounded-xl hover:border-accent/50 transition-all bg-white dark:bg-[#252525]"
+                                        href="[##_article_prev_link_##]">
+                                        <span
+                                            class="block text-xs font-bold text-zinc-500 uppercase mb-2">Previous</span>
+                                        <span
+                                            class="text-lg font-bold line-clamp-1 group-hover:text-accent transition-colors">[##_article_prev_title_##]</span>
+                                    </a>
+                                </s_article_prev>
+                                <s_article_next>
+                                    <a class="group relative p-6 border border-slate-200 dark:border-zinc-800 rounded-xl hover:border-accent/50 transition-all bg-white dark:bg-[#252525] text-right"
+                                        href="[##_article_next_link_##]">
+                                        <span class="block text-xs font-bold text-zinc-500 uppercase mb-2">Next</span>
+                                        <span
+                                            class="text-lg font-bold line-clamp-1 group-hover:text-accent transition-colors">[##_article_next_title_##]</span>
+                                    </a>
+                                </s_article_next>
+                            </div>
+
+                            <s_rp>
+                                <div class="mt-20 scroll-mt-20 border-t border-slate-100 dark:border-zinc-800 pt-16"
+                                    id="comments">
+                                    <h3
+                                        class="text-xl font-bold text-text-primary-light dark:text-white mb-8 flex items-center gap-2">
+                                        Comments
+                                        <span
+                                            class="bg-slate-100 dark:bg-zinc-800 text-text-secondary-light dark:text-text-secondary-dark text-xs py-0.5 px-2 rounded-full">[##_article_rep_rp_cnt_##]</span>
+                                    </h3>
+
+                                    <s_rp_input_form>
+                                        <div class="mb-12 bg-surface-light dark:bg-[#252525] p-6 rounded-xl">
+                                            <div class="flex gap-4">
+                                                <div
+                                                    class="hidden sm:flex w-10 h-10 rounded-full bg-slate-200 dark:bg-zinc-700 items-center justify-center flex-shrink-0">
+                                                    <span class="material-symbols-outlined text-slate-400">person</span>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <textarea name="[##_rp_input_comment_##]"
+                                                        class="w-full bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-lg p-3 text-sm text-text-primary-light dark:text-white placeholder-text-secondary-light dark:placeholder-zinc-600 focus:ring-1 focus:ring-accent focus:border-accent transition-all font-body resize-none min-h-[100px]"
+                                                        placeholder="댓글을 입력하세요..."></textarea>
+                                                    <div class="flex flex-wrap justify-between items-center mt-3 gap-3">
+                                                        <div class="flex gap-2">
+                                                            <s_rp_member>
+                                                                <s_rp_not_logged_in>
+                                                                    <input type="text" name="[##_rp_input_name_##]"
+                                                                        value="[##_guest_name_##]" placeholder="이름"
+                                                                        class="text-xs border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded px-2 py-1 w-24 focus:ring-1 focus:ring-accent outline-none">
+                                                                    <input type="password"
+                                                                        name="[##_rp_input_password_##]"
+                                                                        value="[##_rp_admin_password_##]"
+                                                                        placeholder="암호"
+                                                                        class="text-xs border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded px-2 py-1 w-24 focus:ring-1 focus:ring-accent outline-none">
+                                                                </s_rp_not_logged_in>
+                                                            </s_rp_member>
+                                                        </div>
+                                                        <button type="submit" onclick="[##_rp_onclick_submit_##]"
+                                                            class="px-5 py-2 bg-primary text-white dark:bg-white dark:text-black rounded-lg text-sm font-bold hover:bg-black dark:hover:bg-slate-200 transition-colors">Post
+                                                            Comment</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </s_rp_input_form>
+
+                                    <div class="space-y-8">
+                                        <s_rp_container>
+                                            <s_rp_rep>
+                                                <div id="[##_rp_rep_id_##]" class="group [##_rp_rep_class_##]">
+                                                    <div class="flex gap-4">
+                                                        <div
+                                                            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex-shrink-0 overflow-hidden border border-slate-200 dark:border-zinc-700">
+                                                            <img src="[##_rp_rep_logo_##]"
+                                                                class="w-full h-full object-cover"
+                                                                onerror="this.style.display='none'">
+                                                        </div>
+                                                        <div class="flex-1">
+                                                            <div class="flex items-center gap-2 mb-1">
+                                                                <span
+                                                                    class="font-bold text-text-primary-light dark:text-white text-sm">[##_rp_rep_name_##]</span>
+                                                                <span
+                                                                    class="text-xs text-text-secondary-light dark:text-zinc-600">•</span>
+                                                                <span
+                                                                    class="text-xs text-text-secondary-light dark:text-zinc-500">[##_rp_rep_date_##]</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-sm text-text-primary-light dark:text-text-secondary-dark leading-relaxed mb-2">
+                                                                [##_rp_rep_desc_##]
+                                                            </p>
+                                                            <div class="flex items-center gap-4">
+                                                                <a href="#" onclick="[##_rp_rep_onclick_reply_##]"
+                                                                    class="text-xs font-bold text-text-secondary-light hover:text-accent dark:text-zinc-500 dark:hover:text-white transition-colors">Reply</a>
+                                                                <a href="#" onclick="[##_rp_rep_onclick_delete_##]"
+                                                                    class="text-xs font-bold text-text-secondary-light hover:text-accent dark:text-zinc-500 dark:hover:text-white transition-colors">Edit/Del</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <s_rp2_container>
+                                                        <s_rp2_rep>
+                                                            <div id="[##_rp_rep_id_##]"
+                                                                class="flex gap-4 mt-6 ml-14 pt-6 border-t border-slate-100 dark:border-zinc-800/50 [##_rp_rep_class_##]">
+                                                                <div
+                                                                    class="w-8 h-8 rounded-full bg-slate-200 dark:bg-zinc-700 flex-shrink-0 overflow-hidden">
+                                                                    <img src="[##_rp_rep_logo_##]"
+                                                                        class="w-full h-full object-cover">
+                                                                </div>
+                                                                <div class="flex-1">
+                                                                    <div class="flex items-center gap-2 mb-1">
+                                                                        <span
+                                                                            class="font-bold text-text-primary-light dark:text-white text-sm">[##_rp_rep_name_##]</span>
+                                                                        <span
+                                                                            class="text-xs text-text-secondary-light dark:text-zinc-600">•</span>
+                                                                        <span
+                                                                            class="text-xs text-text-secondary-light dark:text-zinc-500">[##_rp_rep_date_##]</span>
+                                                                    </div>
+                                                                    <p
+                                                                        class="text-sm text-text-primary-light dark:text-text-secondary-dark leading-relaxed mb-2">
+                                                                        [##_rp_rep_desc_##]
+                                                                    </p>
+                                                                    <div class="flex items-center gap-4">
+                                                                        <a href="#"
+                                                                            onclick="[##_rp_rep_onclick_delete_##]"
+                                                                            class="text-xs font-bold text-text-secondary-light hover:text-accent dark:text-zinc-500 dark:hover:text-white transition-colors">Edit/Del</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </s_rp2_rep>
+                                                    </s_rp2_container>
+                                                </div>
+                                            </s_rp_rep>
+                                        </s_rp_container>
+                                    </div>
+                                </div>
+                            </s_rp>
+                        </div>
+                    </s_permalink_article_rep>
+                </s_article_rep>
+
+            </div>
+        </main>
+    </s_t3>
+
+    <script>
+        // 전역 네임스페이스 오염 방지
+        (function() {
+            'use strict';
+
+            // 다크모드 토글 함수
+            window.toggleDarkMode = function() {
+                const html = document.documentElement;
+                const isDark = html.classList.contains('dark');
+
+                if (isDark) {
+                    html.classList.remove('dark');
+                    html.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.remove('light');
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            };
+        })();
+    </script>
+    <script>
+        // 카테고리 토글 기능
+        (function() {
+            'use strict';
+
+            function initCategoryToggle() {
+                const categoryList = document.querySelector('.category-list');
+                if (!categoryList) return;
+
+                const parentItems = categoryList.querySelectorAll('li');
+
+                parentItems.forEach(item => {
+                    const subList = item.querySelector('.sub_category_list');
+                    const link = item.querySelector('a');
+
+                    if (!link) return;
+
+                    const href = link.getAttribute('href');
+                    if (href === '/category' || link.innerText.includes('전체글')) return;
+
+                    if (subList && subList.children.length > 0) {
+                        link.style.display = 'flex';
+                        link.style.alignItems = 'center';
+                        link.style.justifyContent = 'space-between';
+
+                        const toggleBtn = document.createElement('span');
+                        toggleBtn.className = 'material-symbols-outlined text-[18px] cursor-pointer transition-transform duration-300 hover:text-accent';
+                        toggleBtn.textContent = 'expand_more';
+                        toggleBtn.style.marginLeft = 'auto';
+                        toggleBtn.setAttribute('aria-label', '하위 카테고리 펼치기');
+                        toggleBtn.setAttribute('role', 'button');
+
+                        toggleBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            const isOpen = subList.style.display === 'block';
+
+                            if (isOpen) {
+                                subList.style.display = 'none';
+                                toggleBtn.style.transform = 'rotate(0deg)';
+                                toggleBtn.setAttribute('aria-label', '하위 카테고리 펼치기');
+                            } else {
+                                subList.style.display = 'block';
+                                toggleBtn.style.transform = 'rotate(180deg)';
+                                toggleBtn.setAttribute('aria-label', '하위 카테고리 접기');
+                            }
+                        });
+
+                        link.appendChild(toggleBtn);
+
+                        const hasSelected = item.querySelector('.link_selected');
+                        if (!hasSelected) {
+                            subList.style.display = 'none';
+                        } else {
+                            subList.style.display = 'block';
+                            toggleBtn.style.transform = 'rotate(180deg)';
+                            toggleBtn.setAttribute('aria-label', '하위 카테고리 접기');
+                        }
+                    }
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', initCategoryToggle);
+        })();
+    </script>
+
+    <button id="custom-back-to-top" title="맨 위로" aria-label="맨 위로 이동">
+        <img src="./images/up.png" alt="맨 위로">
+    </button>
+
+    <script>
+        // Back to Top 버튼 기능
+        (function() {
+            'use strict';
+
+            const topBtn = document.getElementById('custom-back-to-top');
+            if (!topBtn) return;
+
+            let ticking = false;
+
+            function updateButtonVisibility() {
+                if (window.scrollY > 300) {
+                    topBtn.classList.add('show');
+                } else {
+                    topBtn.classList.remove('show');
+                }
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateButtonVisibility);
+                    ticking = true;
+                }
+            });
+
+            topBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        })();
+    </script>
+
+    <script>
+        // 하위 카테고리 네비게이션 바 표시
+        (function() {
+            'use strict';
+
+            function initSubcategoryNav() {
+                const categoryList = document.querySelector('.category-list');
+                const subcategoryNav = document.getElementById('subcategory-nav');
+
+                if (!categoryList || !subcategoryNav) {
+                    console.log('카테고리 리스트 또는 네비게이션 바를 찾을 수 없습니다.');
+                    return;
+                }
+
+                console.log('카테고리 리스트 HTML:', categoryList.innerHTML.substring(0, 500));
+
+                // 현재 URL 확인
+                const currentUrl = window.location.pathname;
+                console.log('현재 URL:', currentUrl);
+
+                // body id 확인 (티스토리는 category 페이지에서 특정 body id 사용)
+                const bodyId = document.body.id;
+                console.log('Body ID:', bodyId);
+
+                // 카테고리 페이지가 아니면 종료
+                if (!bodyId || (!bodyId.includes('category') && !bodyId.includes('tt-body-category'))) {
+                    console.log('카테고리 페이지가 아닙니다.');
+                    return;
+                }
+
+                // 전체글보기 페이지인지 확인 (URL이 정확히 /category인 경우)
+                if (currentUrl === '/category' || currentUrl === '/category/') {
+                    console.log('전체글보기 페이지에서는 네비게이션 바를 표시하지 않습니다.');
+                    return;
+                }
+
+                // 현재 선택된 카테고리 찾기 - 여러 방법 시도
+                let selectedLinks = categoryList.querySelectorAll('a.link_selected');
+
+                // link_selected가 없으면 현재 URL과 일치하는 링크 찾기
+                if (selectedLinks.length === 0) {
+                    console.log('.link_selected 클래스가 없습니다. URL 매칭으로 찾습니다.');
+                    const allLinks = categoryList.querySelectorAll('a');
+                    allLinks.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && (currentUrl === href || currentUrl.startsWith(href + '/'))) {
+                            selectedLinks = [link];
+                            console.log('URL 매칭으로 찾은 링크:', href);
+                        }
+                    });
+                }
+
+                console.log('선택된 링크 개수:', selectedLinks.length);
+
+                if (selectedLinks.length === 0) {
+                    console.log('선택된 카테고리가 없습니다.');
+                    return;
+                }
+
+                let selectedCategory = null;
+                let subCategoryList = null;
+                let parentLink = null;
+                let hasSubCategories = false;
+
+                // 선택된 링크 중에서 하위 카테고리가 있는 상위 카테고리 찾기
+                Array.from(selectedLinks).forEach(link => {
+                    const parentLi = link.closest('li');
+                    if (!parentLi) return;
+
+                    // 이 li가 하위 카테고리를 가지고 있는지 확인
+                    const subList = parentLi.querySelector('.sub_category_list');
+
+                    if (subList && subList.children.length > 0) {
+                        // 이 카테고리가 상위 카테고리이고 선택되어 있음
+                        selectedCategory = parentLi;
+                        subCategoryList = subList;
+                        parentLink = link;
+                        hasSubCategories = true;
+                        console.log('상위 카테고리 선택됨:', link.textContent.trim());
+                    } else {
+                        // 하위 카테고리가 선택되어 있는 경우, 그 부모 찾기
+                        const parentSubList = parentLi.closest('.sub_category_list');
+                        if (parentSubList) {
+                            const parentLiOfSubList = parentSubList.parentElement.closest('li');
+                            if (parentLiOfSubList) {
+                                selectedCategory = parentLiOfSubList;
+                                subCategoryList = parentSubList;
+                                parentLink = parentLiOfSubList.querySelector('a');
+                                hasSubCategories = true;
+                                console.log('하위 카테고리 선택됨, 부모:', parentLink ? parentLink.textContent.trim() : '');
+                            }
+                        } else {
+                            // 하위 카테고리가 없는 상위 카테고리인 경우
+                            selectedCategory = parentLi;
+                            parentLink = link;
+                            hasSubCategories = false;
+                            console.log('하위 카테고리가 없는 카테고리 선택됨:', link.textContent.trim());
+                        }
+                    }
+                });
+
+                if (!selectedCategory || !parentLink) {
+                    console.log('선택된 카테고리를 찾을 수 없습니다.');
+                    return;
+                }
+
+                // 네비게이션 바 컨테이너
+                const navContainer = subcategoryNav.querySelector('.flex');
+                if (!navContainer) {
+                    console.log('네비게이션 컨테이너를 찾을 수 없습니다.');
+                    return;
+                }
+
+                // 기존 내용 제거
+                navContainer.innerHTML = '';
+
+                // 상위 카테고리 정보 - expand_more 제거
+                let parentCategoryText = parentLink.textContent.trim();
+                // expand_more 텍스트 제거
+                parentCategoryText = parentCategoryText.replace(/expand_more/g, '').trim();
+                // 숫자(개수) 제거
+                parentCategoryText = parentCategoryText.replace(/\(\d+\)$/g, '').replace(/\d+$/g, '').trim();
+
+                const parentCategoryUrl = parentLink.getAttribute('href');
+
+                console.log('상위 카테고리 이름:', parentCategoryText);
+                console.log('상위 카테고리 URL:', parentCategoryUrl);
+                console.log('하위 카테고리 존재 여부:', hasSubCategories);
+
+                // 현재 URL 체크 (상위 카테고리 페이지인지)
+                const isParentPage = currentUrl === parentCategoryUrl;
+
+                console.log('현재 URL:', currentUrl, '/ 부모 URL:', parentCategoryUrl, '/ 일치:', isParentPage);
+
+                // "All" 버튼 추가 (상위 카테고리로 이동)
+                const allButton = document.createElement('a');
+                allButton.href = parentCategoryUrl;
+                allButton.className = 'px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all';
+                allButton.textContent = 'All';
+
+                if (isParentPage) {
+                    allButton.className += ' bg-accent text-white';
+                } else {
+                    allButton.className += ' bg-slate-100 dark:bg-zinc-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-slate-200 dark:hover:bg-zinc-700';
+                }
+
+                navContainer.appendChild(allButton);
+
+                // 하위 카테고리가 있는 경우에만 버튼 추가
+                if (hasSubCategories && subCategoryList) {
+                    let buttonCount = 0;
+                    Array.from(subCategoryList.children).forEach(subItem => {
+                        const subLink = subItem.querySelector('a');
+                        if (!subLink) return;
+
+                        // 카테고리 이름 추출 (개수 및 expand_more 제거)
+                        let fullText = subLink.textContent;
+                        fullText = fullText.replace(/expand_more/g, '').trim();
+                        const subCategoryName = fullText.replace(/\(\d+\)$/, '').replace(/\d+$/, '').trim();
+                        const subCategoryUrl = subLink.getAttribute('href');
+                        const isSelected = currentUrl === subCategoryUrl || subLink.classList.contains('link_selected');
+
+                        const button = document.createElement('a');
+                        button.href = subCategoryUrl;
+                        button.textContent = subCategoryName;
+                        button.className = 'px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all';
+
+                        if (isSelected) {
+                            button.className += ' bg-accent text-white';
+                        } else {
+                            button.className += ' bg-slate-100 dark:bg-zinc-800 text-text-secondary-light dark:text-text-secondary-dark hover:bg-slate-200 dark:hover:bg-zinc-700';
+                        }
+
+                        navContainer.appendChild(button);
+                        buttonCount++;
+                    });
+
+                    console.log('추가된 하위 카테고리 버튼 개수:', buttonCount);
+                } else {
+                    console.log('하위 카테고리가 없어서 전체 버튼만 표시합니다.');
+                }
+
+                // 네비게이션 바 표시
+                subcategoryNav.classList.remove('hidden');
+                console.log('하위 카테고리 네비게이션 바 표시 완료');
+            }
+
+            // DOM 로드 후 실행
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initSubcategoryNav);
+            } else {
+                // 이미 로드된 경우 즉시 실행
+                initSubcategoryNav();
+            }
+
+            // 추가: 페이지 완전히 로드된 후 한번 더 실행 (티스토리 동적 콘텐츠 대응)
+            window.addEventListener('load', function() {
+                setTimeout(initSubcategoryNav, 100);
+            });
+        })();
+    </script>
+</body>
+
+</html>
