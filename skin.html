@@ -54,16 +54,20 @@
         <header
             class="md:hidden sticky top-0 z-50 w-full border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] flex items-center justify-between px-4 h-16">
             <a class="text-xl font-bold tracking-tight" href="[##_blog_url_##]">[##_title_##]</a>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1">
                 <button onclick="toggleDarkMode()" class="p-2 text-text-secondary-light dark:text-text-secondary-dark">
                     <span class="material-symbols-outlined dark:hidden">dark_mode</span>
                     <span class="material-symbols-outlined hidden dark:block">light_mode</span>
                 </button>
+                <button id="mobile-menu-btn" aria-label="메뉴 열기" class="p-2 text-text-secondary-light dark:text-text-secondary-dark">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
             </div>
         </header>
 
-        <aside
-            class="hidden md:flex flex-col w-[280px] lg:w-[320px] fixed h-full border-r border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] z-40">
+        <div id="menu-overlay" class="hidden fixed inset-0 bg-black/50 z-40 md:hidden"></div>
+        <aside id="mobile-menu"
+            class="flex flex-col w-[280px] lg:w-[320px] fixed h-full border-r border-slate-100 dark:border-zinc-800 bg-white dark:bg-[#1e1e1e] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
             <div class="flex-1 overflow-y-auto no-scrollbar p-8 flex flex-col h-full">
                 <div class="flex flex-col items-center text-center mb-10">
                     <div class="w-24 h-24 rounded-full bg-slate-100 mb-5 overflow-hidden ring-1 ring-slate-200">
@@ -247,21 +251,25 @@
                                                         class="w-full bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-lg p-3 text-sm text-text-primary-light dark:text-white placeholder-text-secondary-light dark:placeholder-zinc-600 focus:ring-1 focus:ring-accent focus:border-accent transition-all font-body resize-none min-h-[100px]"
                                                         placeholder="댓글을 입력하세요..."></textarea>
                                                     <div class="flex flex-wrap justify-between items-center mt-3 gap-3">
-                                                        <div class="flex gap-2">
-                                                            <s_rp_member>
-                                                                <s_rp_not_logged_in>
-                                                                    <input type="text" name="[##_rp_input_name_##]"
-                                                                        value="[##_guest_name_##]" placeholder="이름"
-                                                                        class="text-xs border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded px-2 py-1 w-24 focus:ring-1 focus:ring-accent outline-none">
-                                                                    <input type="password"
-                                                                        name="[##_rp_input_password_##]"
-                                                                        value="[##_rp_admin_password_##]"
-                                                                        placeholder="암호"
-                                                                        class="text-xs border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded px-2 py-1 w-24 focus:ring-1 focus:ring-accent outline-none">
-                                                                </s_rp_not_logged_in>
-                                                            </s_rp_member>
-                                                        </div>
-                                                        <button type="submit" onclick="[##_rp_onclick_submit_##]"
+                                                                                                                    <div class="flex gap-2">
+                                                                                                                        <s_rp_member>
+                                                                                                                            <s_rp_not_logged_in>
+                                                                                                                                <input type="text" name="[##_rp_input_name_##]"
+                                                                                                                                    value="[##_guest_name_##]" placeholder="이름"
+                                                                                                                                    class="text-xs border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded px-2 py-1 w-24 focus:ring-1 focus:ring-accent outline-none">
+                                                                                                                                <input type="password"
+                                                                                                                                    name="[##_rp_input_password_##]"
+                                                                                                                                    value="[##_rp_admin_password_##]"
+                                                                                                                                    placeholder="암호"
+                                                                                                                                    class="text-xs border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded px-2 py-1 w-24 focus:ring-1 focus:ring-accent outline-none">
+                                                                                                                            </s_rp_not_logged_in>
+                                                                                                                        </s_rp_member>
+                                                                                                                        <!-- Secret Comment Checkbox -->
+                                                                                                                        <label class="flex items-center gap-1 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                                                                                                                            <input type="checkbox" name="[##_rp_input_is_secret_##]" class="form-checkbox h-4 w-4 text-accent rounded focus:ring-accent border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800">
+                                                                                                                            <span class="whitespace-nowrap">비밀 댓글</span>
+                                                                                                                        </label>
+                                                                                                                    </div>                                                        <button type="submit" onclick="[##_rp_onclick_submit_##]"
                                                             class="px-5 py-2 bg-primary text-white dark:bg-white dark:text-black rounded-lg text-sm font-bold hover:bg-black dark:hover:bg-slate-200 transition-colors">Post
                                                             Comment</button>
                                                     </div>
@@ -282,14 +290,14 @@
                                                                 onerror="this.style.display='none'">
                                                         </div>
                                                         <div class="flex-1">
-                                                            <div class="flex items-center gap-2 mb-1">
-                                                                <span
-                                                                    class="font-bold text-text-primary-light dark:text-white text-sm">[##_rp_rep_name_##]</span>
-                                                                <span
-                                                                    class="text-xs text-text-secondary-light dark:text-zinc-600">•</span>
-                                                                <span
-                                                                    class="text-xs text-text-secondary-light dark:text-zinc-500">[##_rp_rep_date_##]</span>
-                                                            </div>
+                                                        <div class="flex items-center gap-2 mb-1">
+                                                            <span
+                                                                class="font-bold text-text-primary-light dark:text-white text-sm flex items-center gap-1">[##_rp_rep_name_##]</span>
+                                                            <span
+                                                                class="text-xs text-text-secondary-light dark:text-zinc-600">•</span>
+                                                            <span
+                                                                class="text-xs text-text-secondary-light dark:text-zinc-500">[##_rp_rep_date_##]</span>
+                                                        </div>
                                                             <p
                                                                 class="text-sm text-text-primary-light dark:text-text-secondary-dark leading-relaxed mb-2">
                                                                 [##_rp_rep_desc_##]
@@ -315,7 +323,7 @@
                                                                 <div class="flex-1">
                                                                     <div class="flex items-center gap-2 mb-1">
                                                                         <span
-                                                                            class="font-bold text-text-primary-light dark:text-white text-sm">[##_rp_rep_name_##]</span>
+                                                                            class="font-bold text-text-primary-light dark:text-white text-sm flex items-center gap-1">[##_rp_rep_name_##]</span>
                                                                         <span
                                                                             class="text-xs text-text-secondary-light dark:text-zinc-600">•</span>
                                                                         <span
@@ -675,6 +683,62 @@
             // 추가: 페이지 완전히 로드된 후 한번 더 실행 (티스토리 동적 콘텐츠 대응)
             window.addEventListener('load', function() {
                 setTimeout(initSubcategoryNav, 100);
+            });
+        })();
+    </script>
+    <script>
+        // 모바일 메뉴 토글
+        (function() {
+            'use strict';
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('menu-overlay');
+
+            if (!menuBtn || !menu || !overlay) return;
+
+            const toggleMenu = () => {
+                const isHidden = menu.classList.contains('-translate-x-full');
+                if (isHidden) {
+                    menu.classList.remove('-translate-x-full');
+                    overlay.classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden');
+                    document.body.classList.add('md:overflow-auto');
+                } else {
+                    menu.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                    document.body.classList.remove('md:overflow-auto');
+                }
+            };
+
+            menuBtn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', toggleMenu);
+
+            // 메뉴 내부에 닫기 버튼 추가
+            const menuContent = menu.querySelector('.flex-1.overflow-y-auto');
+            if (menuContent) {
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'md:hidden absolute top-3 right-3 p-2 text-text-secondary-light dark:text-text-secondary-dark';
+                closeBtn.setAttribute('aria-label', '메뉴 닫기');
+                closeBtn.innerHTML = '<span class="material-symbols-outlined">close</span>';
+                closeBtn.addEventListener('click', toggleMenu);
+                menuContent.prepend(closeBtn);
+            }
+
+            // 메뉴 내 링크 클릭 시 메뉴 닫기 (새 창 제외)
+            const menuLinks = menu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (link.target !== '_blank') {
+                        // 약간의 딜레이를 주어 페이지 이동과 메뉴 닫힘이 자연스럽게 보이도록 함
+                        setTimeout(() => {
+                            const isHidden = menu.classList.contains('-translate-x-full');
+                            if (!isHidden) {
+                                toggleMenu();
+                            }
+                        }, 100);
+                    }
+                });
             });
         })();
     </script>

@@ -413,3 +413,8 @@ html.dark #subcategory-nav {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+/* 댓글 작성자 이름 옆에 자동으로 붙는 모든 아이콘(작성자, 비밀글 등) 숨기기 */
+div[id^='comment'] span.flex.items-center.gap-1 > img {
+    display: none !important;
+}
